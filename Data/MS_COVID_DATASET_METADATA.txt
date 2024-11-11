@@ -1,0 +1,74 @@
+This document was created 24 Oct 2024 by Jason Stasio.
+
+This data set, titled Patient-level dataset to study the effect of COVID-19 in people with Multiple Sclerosis, was obtained through PhysioNet:
+Goldberger, A., Amaral, L., Glass, L., Hausdorff, J., Ivanov, P. C., Mark, R., ... & Stanley, H. E. (2000). PhysioBank, PhysioToolkit, and PhysioNet: Components of a new research resource for complex physiologic signals. Circulation [Online]. 101 (23), pp. e215–e220
+Link: https://physionet.org/content/patient-level-data-covid-ms/1.0.1/
+
+It was published here:
+Khan, H., Geys, L., baneke, p., Comi, G., & Peeters, L. (2024). Patient-level dataset to study the effect of COVID-19 in people with Multiple Sclerosis (version 1.0.1). PhysioNet. https://doi.org/10.13026/77ta-1866
+
+This dataset was collected to study the effects of COVID-19 in people with Multiple Sclerosis due to their heightened susceptibility to infections and concerns about how the disease interacts with their central nervous system. The data was collected via direct entry into a created platform, done by clinicians, the person with MS being studied, or a representative either in a hospital setting or at home. Although not specified, collection presumably began toward the start of the pandemic and was terminated on February 3rd, 2022. It contains information about smoking habits, COVID-19 symptoms, treatment, and whether patients recovered from 1141 people with MS. 
+
+The dataset was modified in the following ways:
+- Since the values for "current_or_former_smoker" were either "Yes" or empty, I filled the empty spaces with "Unanswered" to account for the true answer being No, patients who are current or former smokers but were too embarrassed to answer, etc. 
+- Changed "age_in_cat" column name to "age_category"
+- Changed "bmi_in_cat2" column name to "bmi_category"
+- Changed "current_dmt" column name to "status_dmt"
+- Changed edss_in_cat2" column name to "edss_category"
+- Changed "ms_type2" column name to "ms_type" 
+- Changed "duration_treatment_cat" column name to "treatment_duration_category" 
+- Changed "stop_or_end_date_combined" column name to "end_date"
+- Changed "covid19_outcome_levels_2" column name to "covid19_outcome"
+
+
+Key:
+secret_name - Unique and anonymous identifier of patient with MS
+report_source - Indicates the source from which the data was acquired, either patient/representative or clinician 
+age_category - Indicates the age category a patient falls into: 0 = 0-17 years, 1 = 18-50 years, 2 = 51-70 years, 3= 70 + years
+bmi_category - Represents the BMI (Body Mass Index) category a patient falls into, either not_overweight (BMI < 31) or overweight (BMI = 31+)
+covid19_admission_hospital - Indicates if the patient was admitted into the hospital as a result of COVID-19, either Yes or No
+covid19_confirmed_case - Indicates if a patient had a confirmed COVID-19 diagnosis, either Yes or No
+covid19_diagnosis - Reflects the perceived COVID-19 diagnosis of a patient: suspected, not_suspected, or confirmed
+covid19_has_symptoms - Indicates if covid19 symptoms were present in patient, either Yes or No
+covid19_icu_stay - Indicated if the patient stayed in the ICU (Intensive Care Unit) as a result of COVID-19, either Yes or No
+covid19_self_isolation - Indicates if the patient self-isolated as a result of clinician advisory and or own volition, either Yes or No
+covid19_sympt_chills - Presence of chills as a COVID-19 symptom, either Yes or No
+covid19_sympt_dry_cough - Presence of dry cough as a COVID-19 symptom, either Yes or No
+covid19_sympt_fatigue - Presence of fatigue as a COVID-19 symptom, either Yes or No
+covid_19_sympt_fever - Presence of fever as a COVID-19 symptom, either Yes or No
+covid19_sympt_loss_smell_taste - Indicates loss of smell AND taste as a COVID-19 symptom, either Yes or No 
+covid19_sympt_nasal_congestion - Presence of nasal congestion as a COVID-19 symptom, either Yes or No
+covid19_sympt_pain - Presence of pain as a COVID-19 symptom, either Yes or No
+covid19_sympt_pneumonia - Presence of pneumonia as a COVID-19 symptom, either Yes or No
+covid19_sympt_shortness_breath - Presence of shortness of breath as a COVID-19 symptom, either Yes or No 
+covid19_sympt_sore_throat - Presence of sore throat as a COVID-19 symptom, either Yes or No
+covid19_ventilation - Indicates if the patient used a ventilator unit during their hospital stay, either Yes or No
+status_dmt - Indicates the status of DMT (disease-modifying therapy) of the patient during the time of data entry: Yes, No, or never_treated
+dmt_glucocorticoid - Indicates if the patient is intaking glucocorticoid supplements, either Yes or No
+edss_category - Indicates the category for EDSS (Expanded Disability Status Scale), an ordinal scale from 0 to 10 that runs in icrements of 0.5, 0 indicates normal neurological status while 10 indicates death due to MS
+pregnancy (if applicable) - Indicated pregnancy status of the patient, either Yes or No
+sex - The biological sex of the patient, either Male or Female
+ms_type - The Multiple Sclerosis phenotype of the patient: relapsing_remitted, progressive_MS, and other
+current_or_former_smoker - Indicates the smoking status of the patient, either Yes (current or former) or No
+dmt_type_overall - Indicates the specific type of DMT (disease-modifying therapy) the patient was on: currently on another drug not listed, currently on dimethyl fumarate, currently on fingolimod, currently not using any DMT, currently on interferon, currently on ocrelizumab, currently on natalizumab, currently on cladribine, currently on rituximab, currently on alemtuzumab
+treatment_duration_category - The duration of treatment of MS category: 0 = duration of treatment is less than 11 years, 1 = duration of treatment is 11 years or more
+end_date (if applicable) - Date in dd/mm/yyyy format (note: this leads to odd formatting in Excel where some dates are right sorted/recognized while others are left sorted/not recognized) when DMT was stopped
+covid19_outcome - The outcome of a person's covid19 case: 0 - Patient has COVID-19 but has not been hospitalized, 1 - Patient has COVID-19 and has been hospitalized, 2 - The person has COVID-19 and has been hospitalized, has been in the intensive care unit, and/or was in a ventilation, 3 - Patient died due to COVID-19 (not present in the dataset)
+has_comorbidities -Indicates whether the person has any comorbidities, either Yes or No
+com_cardiovascular_disease - Indicates the presence of cardiovascular comorbidities, either Yes or No
+com_chronic_kidney_disease - Indicates whether the patient has any chronic kidney disease, either Yes or No
+com_chronic_liver_disease - Indicates whether the patient has any chronic liver disease, either Yes or No
+com_diabetes - Indicates whether the patient has any diabetes, either Yes or No
+com_hypertension - Indicates whether the patient has any hypertension, either Yes or No
+com_immunodeficiency - Indicates whether the patient has any immunodeficiency, either Yes or No
+com_lung_disease - Indicates whether the patient has any lung disease, either Yes or No
+com_malignancy - Indicates whether the patient has any malignancy, either Yes or No
+com_neurological_neuromuscular - Indicates whether the patient has any neurological and/or neuromuscular comorbidity, either Yes or No
+comorbidities_other - Indicates other comorbidities the patient might have not listed in prior columns
+
+
+
+
+
+
+

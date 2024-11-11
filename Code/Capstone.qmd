@@ -1,0 +1,256 @@
+---
+title: "Capstone"
+format: html
+editor: visual
+---
+
+The purpose of this project is to demonstrate compentency in the scientific, reproducible workflow of data analysis. I will be running several statistical analyses to answer questions I've hypothesized about a dataset on COVID-19 patients with multiple sclerosis (MS).
+
+# Set-up
+```{r}
+#Clear the environment 
+rm(list = ls())
+#Load in packages
+library(tidyverse)
+library(here)
+library(ggfortify)
+```
+
+# Load in and examine the dataset
+```{r}
+#Load in the dataset
+covid <- read.csv(here("Data","MS_COVID_DATASET_MODIFIED.csv"))
+#Examine the dataset
+glimpse(covid)
+```
+
+# Apply fixes/Convert applicable columns to factor or date data types
+```{r}
+#Fill empty rows in "covid19_sympt_loss_taste_or_smell" with "Unanswered" so proper analyses can be conducted
+covid <- covid |>
+  mutate(covid19_sympt_loss_smell_taste = if_else(covid19_sympt_loss_smell_taste == "", "Unanswered", covid19_sympt_loss_smell_taste))
+
+#Convert to factor data type
+covid$report_source <- as.factor(covid$report_source)
+covid$bmi_category <- as.factor(covid$bmi_category)
+covid$covid19_admission_hospital <- as.factor(covid$covid19_admission_hospital)
+covid$covid19_confirmed_case <- as.factor(covid$covid19_confirmed_case)
+covid$covid19_diagnosis <- as.factor(covid$covid19_diagnosis)
+covid$covid19_has_symptoms <- as.factor(covid$covid19_has_symptoms)
+covid$covid19_icu_stay <- as.factor(covid$covid19_icu_stay)
+covid$covid19_outcome_recovered <- as.factor(covid$covid19_outcome_recovered)
+covid$covid19_self_isolation <- as.factor(covid$covid19_self_isolation) 
+covid$covid19_sympt_chills <- as.factor(covid$covid19_sympt_chills)
+covid$covid19_sympt_dry_cough <- as.factor(covid$covid19_sympt_dry_cough)
+covid$covid19_sympt_fatigue <- as.factor(covid$covid19_sympt_fatigue)
+covid$covid19_sympt_fever <- as.factor(covid$covid19_sympt_fever)
+covid$covid19_sympt_loss_smell_taste <- as.factor(covid$covid19_sympt_loss_smell_taste) 
+covid$covid19_sympt_nasal_congestion <- as.factor(covid$covid19_sympt_nasal_congestion)
+covid$covid19_sympt_pain <- as.factor(covid$covid19_sympt_pain)
+covid$covid19_sympt_pneumonia <- as.factor(covid$covid19_sympt_pneumonia)
+covid$covid19_sympt_shortness_breath <- as.factor(covid$covid19_sympt_shortness_breath) 
+covid$covid19_sympt_sore_throat <- as.factor(covid$covid19_sympt_sore_throat)
+covid$covid19_ventilation <- as.factor(covid$covid19_ventilation)
+covid$status_dmt <- as.factor(covid$status_dmt)
+covid$dmt_glucocorticoid <- as.factor(covid$dmt_glucocorticoid)
+covid$has_comorbidities <- as.factor(covid$has_comorbidities)
+covid$pregnancy <- as.factor(covid$pregnancy)
+covid$sex <- as.factor(covid$sex)
+covid$ms_type <- as.factor(covid$ms_type)
+covid$current_or_former_smoker <- as.factor(covid$current_or_former_smoker)
+covid$com_cardiovascular_disease <- as.factor(covid$com_cardiovascular_disease)
+covid$has_comorbidities.1 <- as.factor(covid$has_comorbidities.1)
+covid$has_comorbidities.2 <- as.factor(covid$has_comorbidities.2)
+covid$com_chronic_kidney_disease <- as.factor(covid$com_chronic_kidney_disease)
+covid$com_chronic_liver_disease <- as.factor(covid$com_chronic_liver_disease) 
+covid$com_diabetes <- as.factor(covid$com_diabetes)
+covid$com_hypertension <- as.factor(covid$com_hypertension)
+covid$com_immunodeficiency <- as.factor(covid$com_immunodeficiency)
+covid$com_lung_disease <- as.factor(covid$com_lung_disease)
+covid$com_malignancy <- as.factor(covid$com_malignancy)
+covid$com_neurological_neuromuscular <- as.factor(covid$com_neurological_neuromuscular)
+#Convert to date data type
+covid <- covid |>
+  mutate(end_date = mdy(end_date))
+#Note: This is the correct code, but there is an issue with importing the dates from Excel, this may or may not need to be rectified in the future considering none of the planned statistical analyses so far involve the end_date column 
+```
+
+# Check the factor levels and repair any issues
+```{r}
+#Check report_source levels
+levels(covid$report_source)
+#Check bmi_category levels
+levels(covid$bmi_category)
+#Check covid19_admission_hospital levels
+levels(covid$covid19_admission_hospital)
+#Check covid19_confirmed_case levels
+levels(covid$covid19_confirmed_case)
+#Check covid19_diagnosis levels
+levels(covid$covid19_diagnosis)
+#Check covid19_has_symptoms levels
+levels(covid$covid19_has_symptoms)
+#Check covid19_icu_stay levels
+levels(covid$covid19_icu_stay)
+#Check covid19_outcome_recovered levels
+levels(covid$covid19_outcome_recovered)
+#Check covid19_self_isolation levels
+levels(covid$covid19_self_isolation)
+#Check covid19_sympt_chills levels
+levels(covid$covid19_sympt_chills)
+#Check covid19_sympt_dry_cough levels
+levels(covid$covid19_sympt_dry_cough)
+#Check covid19_sympt_fatigue levels
+levels(covid$covid19_sympt_fatigue)
+#Check covid19_sympt_fever levels
+levels(covid$covid19_sympt_fever)
+#Check covid19_sympt_loss_smell_taste levels
+levels(covid$covid19_sympt_loss_smell_taste)
+#Check covid19_sympt_nasal_congestion levels
+levels(covid$covid19_sympt_nasal_congestion)
+#Check covid19_sympt_pain levels
+levels(covid$covid19_sympt_pain)
+#Check covid19_sympt_pneumonia levels
+levels(covid$covid19_sympt_pneumonia)
+#Check covid19_sympt_shortness_breath levels
+levels(covid$covid19_sympt_shortness_breath)
+#Check covid19_sympt_sore_throat levels
+levels(covid$covid19_ventilation)
+#Check covid19_ventilation levels
+levels(covid$covid19_ventilation)
+#Check status_dmt levels
+levels(covid$status_dmt)
+#Check dmt_glucocorticoid levels
+levels(covid$dmt_glucocorticoid)
+#Check has_comorbidities levels
+levels(covid$has_comorbidities)
+#Check pregnancy levels
+levels(covid$pregnancy)
+#Check sex levels
+levels(covid$sex)
+#Check ms_type levels 
+levels(covid$ms_type)
+#Check current_or_former_smoker levels
+levels(covid$current_or_former_smoker)
+
+#The current_or_former_smoker column does need repair, the values of "no" should be replaced with "Unanswered"
+#Find the rows containing "no"
+fix1 <- which(covid$current_or_former_smoker %in% "no")
+#Replace the rows containing "no" to "Unanswered"
+covid$current_or_former_smoker[fix1] <- "Unanswered"
+#Re-list the factor levels
+covid$current_or_former_smoker <- factor(covid$current_or_former_smoker)
+#Ensure the factor levels are repaired
+levels(covid$current_or_former_smoker)
+
+#Check com_cardiovascular_disease levels
+levels(covid$com_cardiovascular_disease)
+#Check has_comorbidities.1 levels
+levels(covid$has_comorbidities.1)
+#Check has_comorbidities.2 levels
+levels(covid$has_comorbidities.2)
+#Check com_chronic_kidney_disease levels
+levels(covid$com_chronic_kidney_disease)
+#Check com_chronic_liver_disease levels
+levels(covid$com_chronic_liver_disease)
+#Check com_diabetes levels
+levels(covid$com_diabetes)
+#Check com_hypertension levels
+levels(covid$com_hypertension)
+#Check com_immunodeficiency levels
+levels(covid$com_immunodeficiency)
+#Check com_lung_disease levels
+levels(covid$com_lung_disease)
+#Check com_malignancy levels 
+levels(covid$com_malignancy)
+#Check com_neurological_neuromuscular levels
+levels(covid$com_neurological_neuromuscular)
+```
+
+# Additional comments about the dataset
+The column names were already updated from the original dataset and documented in the metadata file. Thus, there is no need to adjust any column names here. 
+Commentary on the non-factor data types present:
+-secret_name and dmt_type_overall are categorical data 
+-age_category, edss_category, covid19_outcome, and comorbidities_other are discrete count data that represent categories, which are detailed in the metadata file 
+-year_onset and end_date are continuous, interval data 
+
+#Check for any outliers in the continous data
+```{r}
+#Check the year_onset column for outliers
+ggplot(covid, aes(x=year_onset)) +
+  geom_histogram() +
+  theme_bw()
+#Examining the histogram, there does seem to be outliers, with cases reported to begin in the 1800s. Given the life expectancy of humans, this is clearly a mistake that was made when entering the data. 
+#Remove the outliers from the data set
+covid_update <- filter(covid, year_onset > 1900)
+#Check the updated plot
+#Check the year_onset column for outliers
+ggplot(covid_update, aes(x=year_onset)) +
+  geom_histogram() +
+  theme_bw()
+#The end_date column could not be examined for outliers since it could not be loaded into R
+```
+
+# Save the final dataset version to the Data folder
+```{r}
+#Save the final dataset, indicating it is the file that will be used for further analysis
+write.csv(covid_update, here("Data","MS_COVID_DATASET_FINAL.csv"), row.names=FALSE)
+```
+
+# Get a sense of the data by performing a preliminary analysis 
+
+Statistical Test 1
+```{r}
+#Statistical test 1: Is there a relationship between a patient's MS type and the likelihood of them being confirmed to have COVID-19 
+#Gather counts of confirmed COVID-19 case (Yes or No) by MS type
+counts_ms_type <- covid_update |>
+  group_by(ms_type, covid19_confirmed_case) |>
+    summarize(
+      count = length(ms_type)
+    )
+#Create a bar graph to view counts of confirmed COVID-19 cases (Yes or No) by MS type
+ggplot(counts_ms_type, aes(x = ms_type, y = count, fill = covid19_confirmed_case)) +
+  geom_bar(stat = 'identity', position = 'dodge') +
+  scale_fill_manual(values = c("yes" = "green", "no" = "red")) + 
+  geom_text(aes(label = count), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5) +
+  theme_bw()
+#Examining the graph, it may be useful to use the covid19_diagnosis column as the dependent variable instead to get an idea if patients with varying MS types had higher chances of being suspected of having COVID-19
+#Gather counts of confirmed COVID-19 diagnosis (confirmed, suspected, or not suspected) by MS type
+counts_ms_type_2 <- covid_update |>
+  group_by(ms_type, covid19_diagnosis) |>
+    summarize(
+      count = length(ms_type)
+    )
+#Create a bar graph to view counts of confirmed COVID-19 diagnoses (confirmed, suspected, or not_suspected) by MS type
+ggplot(counts_ms_type_2, aes(x = ms_type, 
+                             y = count, fill = 
+                             covid19_diagnosis)) +
+  geom_bar(stat = 'identity', position = 'dodge') +
+  scale_fill_manual(values = c("confirmed" = "green", 
+                               "suspected" = "yellow", 
+                               "not_suspected" = "red")) + 
+  geom_text(aes(label = count), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5) +
+  theme_bw()
+```
+
+Statistical Test 2
+```{r}
+#Statistical Test 2: Is there a relationship between an MS patient's status as a current or former smoker and their likelihood of experiencing the COVID-19 symptom of loss of taste or smell
+#Gather counts of confirmed loss of taste or smell symptoms (Yes, No, or empty), by current or former smoker status (Yes or Unanswered)
+counts_smoker_status <- covid_update |> 
+  group_by(current_or_former_smoker, covid19_sympt_loss_smell_taste) |>
+    summarize(
+      count = length(covid19_sympt_loss_smell_taste)
+    )
+#Create a bar graph to view counts of confirmed lost of taste or smell symptoms (Yes, No, or empty) by current or former smoker status (Yes or Unanswered)
+ggplot(counts_smoker_status, aes(x = current_or_former_smoker, y = count, fill = covid19_sympt_loss_smell_taste)) +
+  geom_bar(stat = 'identity', position = 'dodge') +
+  scale_fill_manual(values = c("yes" = "green", "no" = "red", "Unanswered" = "grey")) + 
+  geom_text(aes(label = count), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5) +
+  theme_bw()
+```
