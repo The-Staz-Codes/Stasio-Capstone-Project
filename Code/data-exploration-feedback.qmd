@@ -1,0 +1,16 @@
+---
+title: "data-exploration-feedback"
+format: html
+editor: visual
+---
+
+## Data Exploration Feedback
+
+1.  It is hard to tell from your metadata files whether they refer to MS_COVID_DATASET_MODIFIED.csv or the FINAL.csv version. That should be made clear in the text of the metadata files.
+2.  What do you learn by running "glimpse()"?
+3.  You do lots of converting to factors. An easier way is to add `stringsAsFactors = T` when you use `read.csv` so that all of the strings come in as factors.
+4.  Your end_data conversion didn't work - I think the reason is because not all of the dates are entered in the spreadsheet in the same format so lubridate chokes.
+5.  You haven't addressed what it means that for a number of your factor vars you have 3 apparent levels: "", "no" and "yes". Please explain the `" "` and why you don't need to do anythig with hit.
+6.  e.g. Line 184, please put your scientific thinking outside of code chunks (and use more code chunks if needed).
+7.  I would have liked to have seen you do more to get a feeling for the range of responses/numbers etc. for the categorical data. How could you do that?
+8.  I didn't read through your statistical analysis, as it is not a part of data exploration. You were asked to put any analyses you started into a different .qmd file. Data exploration is really just about getting your data repaired and getting an understanding of the data before you begin an analysis.
