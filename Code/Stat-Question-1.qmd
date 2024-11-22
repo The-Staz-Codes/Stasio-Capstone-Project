@@ -1,0 +1,100 @@
+---
+title: "Stat-Question-1"
+format: html
+editor: visual
+---
+
+The purpose of this file is to run through the statistical tests to answer the first proposed question about the dataset for my capstone project: Is there a relationship between a patient's MS type and the likelihood of them being confirmed or suspected to have COVID-19?
+
+#### Set up
+
+```{r}
+#Clear the environment
+rm(list = ls())
+#Load in packages 
+library(tidyverse)
+library(here)
+library(ggfortify)
+```
+
+#### Load in the cleaned dataset
+
+Steps 1 and 2 of the course's data analysis workflow (ensuring the data is entered correctly and constructing visualizations of the data, repairing data as needed) were completed prior and saved as the dataset that will be loaded in.
+
+```{r}
+covid <- read.csv(here("Data","MS_COVID_DATASET_FINAL.csv"))
+```
+
+#### Plot relationships and make guessess
+
+```{r}
+#Gather counts of confirmed COVID-19 diagnosis (confirmed, suspected, or not suspected) by MS type
+counts_ms_type_2 <- covid |>
+  group_by(ms_type, covid19_diagnosis) |>
+    summarize(
+      count = length(ms_type)
+    )
+#Create a bar graph to view counts of confirmed COVID-19 diagnoses (confirmed, suspected, or not_suspected) by MS type
+ggplot(counts_ms_type_2, aes(x = ms_type, 
+                             y = count, fill = 
+                             covid19_diagnosis)) +
+  geom_bar(stat = 'identity', position = 'dodge') +
+  scale_fill_manual(values = c("confirmed" = "green", 
+                               "suspected" = "yellow", 
+                               "not_suspected" = "red")) + 
+  geom_text(aes(label = count), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5) +
+  theme_bw()
+```
+
+Examining the plot, we see there is far more data for relapsing remitting MS type patients (823 points) compared to progressive (92 points) and other (123 points) MS types. The ratios between confirmed to not_suspected and suspected to not_suspected cases seems similar across all 3 groups. Thus, I do not expect to observe any statistical difference among the groups.
+
+Question: However, I am curious whether or not there would be any statistical difference if confirmed and suspected counts were combined and compared to not_suspected counts. This would involve adding counts together, which we haven't covered how to do in class.
+
+So, for now, I will proceed with the aforementioned comparisons. Since I have a categorical predictor variable and categorical response variable, a chi-square goodness of fit test is appropriate.
+
+#### Conduct a chi-square goodness of fit test
+
+```{r}
+# Transform the dataframe into a matrix
+covid.mat <- xtabs(count ~ ms_type + covid19_diagnosis, data = counts_ms_type_2)
+# Run the chi-square test
+chisq.test(covid.mat)
+#Access the specifics of the chi-squared test
+covid.chi <- chisq.test(covid.mat)
+names(covid.chi)
+```
+
+The first thing worth noting is that running this code yields the message: "Warning in chisq.test(covid.mat) : Chi-squared approximation may be incorrect." This likely stems from the fact the other and progressive MS types have less than 5 data points for confirmed cases. Thus, it seems worth taking the approach of combining the suspected and confirmed counts when I run the analyses for the final product. If we ignore the warning, we observe there is no statistical significance between the likelihood of being suspected, confirmed, or not suspected of COVID-19 among MS types (X-squared = 1.1165, df = 4, p-value = 0.8916). The p-value is very high, suggesting the observed results are likely just due to chance.
+
+#### Construct a clean plot to convey these results
+
+```{r}
+#Create bar plot similar to the initial plot but with a few tweaks to make it more visually appealing
+ggplot(counts_ms_type_2, aes(x = ms_type, 
+                             y = count, fill = 
+                             covid19_diagnosis)) +
+  geom_bar(stat = 'identity', position = 'dodge') +
+  scale_fill_manual(values = c("confirmed" = "green", 
+                               "suspected" = "yellow", 
+                               "not_suspected" = "red")) + 
+  geom_text(aes(label = count), 
+            position = position_dodge(width = 1), 
+            vjust = -0.5) +
+  xlab("MS Type") +
+  ylab("Number of Patients") +
+  scale_x_discrete(limits = c("other", "progressive_MS", "relapsing_remitting"),
+  labels = c("Other", "Progressive", "Relapsing Remitting")) +
+  theme(
+    legend.key = element_rect(fill = NA),
+    axis.title.x = element_text(size = 10), 
+    axis.title.y = element_text(size = 10), 
+    axis.text.x = element_text(angle = 15, vjust = 0.5, colour = "Black"),
+    panel.background = element_rect(fill = NA, colour = "black"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_line(colour = "gray")
+    )
+```
+
+Concluding statement: A patient's MS type, other, progressive, or relapsing remitting, is not a significant predictor of their COVID-19 diagnosis, confirmed, suspected or not suspected, (X-squared = 1.1165, df = 4, p-value = 0.8916).

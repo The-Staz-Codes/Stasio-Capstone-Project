@@ -7,6 +7,7 @@ editor: visual
 The purpose of this project is to demonstrate compentency in the scientific, reproducible workflow of data analysis. I will be running several statistical analyses to answer questions I've hypothesized about a dataset on COVID-19 patients with multiple sclerosis (MS).
 
 # Set-up
+
 ```{r}
 #Clear the environment 
 rm(list = ls())
@@ -17,6 +18,7 @@ library(ggfortify)
 ```
 
 # Load in and examine the dataset
+
 ```{r}
 #Load in the dataset
 covid <- read.csv(here("Data","MS_COVID_DATASET_MODIFIED.csv"))
@@ -25,6 +27,7 @@ glimpse(covid)
 ```
 
 # Apply fixes/Convert applicable columns to factor or date data types
+
 ```{r}
 #Fill empty rows in "covid19_sympt_loss_taste_or_smell" with "Unanswered" so proper analyses can be conducted
 covid <- covid |>
@@ -76,6 +79,7 @@ covid <- covid |>
 ```
 
 # Check the factor levels and repair any issues
+
 ```{r}
 #Check report_source levels
 levels(covid$report_source)
@@ -167,13 +171,11 @@ levels(covid$com_neurological_neuromuscular)
 ```
 
 # Additional comments about the dataset
-The column names were already updated from the original dataset and documented in the metadata file. Thus, there is no need to adjust any column names here. 
-Commentary on the non-factor data types present:
--secret_name and dmt_type_overall are categorical data 
--age_category, edss_category, covid19_outcome, and comorbidities_other are discrete count data that represent categories, which are detailed in the metadata file 
--year_onset and end_date are continuous, interval data 
+
+The column names were already updated from the original dataset and documented in the metadata file. Thus, there is no need to adjust any column names here. Commentary on the non-factor data types present: -secret_name and dmt_type_overall are categorical data -age_category, edss_category, covid19_outcome, and comorbidities_other are discrete count data that represent categories, which are detailed in the metadata file -year_onset and end_date are continuous, interval data
 
 #Check for any outliers in the continous data
+
 ```{r}
 #Check the year_onset column for outliers
 ggplot(covid, aes(x=year_onset)) +
@@ -191,14 +193,16 @@ ggplot(covid_update, aes(x=year_onset)) +
 ```
 
 # Save the final dataset version to the Data folder
+
 ```{r}
 #Save the final dataset, indicating it is the file that will be used for further analysis
 write.csv(covid_update, here("Data","MS_COVID_DATASET_FINAL.csv"), row.names=FALSE)
 ```
 
-# Get a sense of the data by performing a preliminary analysis 
+# Get a sense of the data by performing a preliminary analysis
 
 Statistical Test 1
+
 ```{r}
 #Statistical test 1: Is there a relationship between a patient's MS type and the likelihood of them being confirmed to have COVID-19 
 #Gather counts of confirmed COVID-19 case (Yes or No) by MS type
@@ -237,6 +241,7 @@ ggplot(counts_ms_type_2, aes(x = ms_type,
 ```
 
 Statistical Test 2
+
 ```{r}
 #Statistical Test 2: Is there a relationship between an MS patient's status as a current or former smoker and their likelihood of experiencing the COVID-19 symptom of loss of taste or smell
 #Gather counts of confirmed loss of taste or smell symptoms (Yes, No, or empty), by current or former smoker status (Yes or Unanswered)
