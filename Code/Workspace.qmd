@@ -1,0 +1,49 @@
+---
+title: "Workspace"
+format: html
+editor: visual
+---
+
+#### Set up
+
+```{r}
+#Clear the environment
+rm(list = ls())
+#Load in packages 
+library(tidyverse)
+library(here)
+library(ggfortify)
+```
+
+#### Load in the cleaned dataset
+
+```{r}
+covid <- read.csv(here("Data","MS_COVID_DATASET_FINAL.csv"))
+```
+
+#### Plot relationships and make guessess
+
+```{r}
+#Combine the suspected and confirmed cases
+fix <- which(covid$covid19_diagnosis %in% c("confirmed","suspected"))
+covid$covid19_diagnosis[fix] <- "confirmed_or_suspected"
+
+#Gather counts of confirmed COVID-19 diagnosis (confirmed, suspected, or not suspected) by MS type
+counts_ms_type <- covid |>
+  group_by(ms_type, covid19_diagnosis) |>
+    summarize(
+      count = length(ms_type)
+    )
+
+#Create a bar graph to view counts of confirmed COVID-19 diagnoses (confirmed, suspected, or not_suspected) by MS type
+ggplot(counts_ms_type, aes(x = ms_type, 
+                             y = count, fill = 
+                             covid19_diagnosis)) +
+  geom_bar(stat = 'identity', position = 'dodge') +
+  scale_fill_manual(values = c("confirmed_or_suspected" = "lightgreen", 
+                               "not_suspected" = "red")) + 
+  geom_text(aes(label = count), 
+            position = position_dodge(width = 0.9), 
+            vjust = -0.5) +
+  theme_bw()
+```

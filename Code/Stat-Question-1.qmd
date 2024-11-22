@@ -29,13 +29,13 @@ covid <- read.csv(here("Data","MS_COVID_DATASET_FINAL.csv"))
 
 ```{r}
 #Gather counts of confirmed COVID-19 diagnosis (confirmed, suspected, or not suspected) by MS type
-counts_ms_type_2 <- covid |>
+counts_ms_type <- covid |>
   group_by(ms_type, covid19_diagnosis) |>
     summarize(
       count = length(ms_type)
     )
 #Create a bar graph to view counts of confirmed COVID-19 diagnoses (confirmed, suspected, or not_suspected) by MS type
-ggplot(counts_ms_type_2, aes(x = ms_type, 
+ggplot(counts_ms_type, aes(x = ms_type, 
                              y = count, fill = 
                              covid19_diagnosis)) +
   geom_bar(stat = 'identity', position = 'dodge') +
@@ -58,7 +58,7 @@ So, for now, I will proceed with the aforementioned comparisons. Since I have a 
 
 ```{r}
 # Transform the dataframe into a matrix
-covid.mat <- xtabs(count ~ ms_type + covid19_diagnosis, data = counts_ms_type_2)
+covid.mat <- xtabs(count ~ ms_type + covid19_diagnosis, data = counts_ms_type)
 # Run the chi-square test
 chisq.test(covid.mat)
 #Access the specifics of the chi-squared test
@@ -72,7 +72,7 @@ The first thing worth noting is that running this code yields the message: "Warn
 
 ```{r}
 #Create bar plot similar to the initial plot but with a few tweaks to make it more visually appealing
-ggplot(counts_ms_type_2, aes(x = ms_type, 
+ggplot(counts_ms_type, aes(x = ms_type, 
                              y = count, fill = 
                              covid19_diagnosis)) +
   geom_bar(stat = 'identity', position = 'dodge') +
