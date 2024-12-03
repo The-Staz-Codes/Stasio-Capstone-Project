@@ -7,6 +7,7 @@ editor: visual
 The purpose of this file is to run through the statistical tests to answer the second proposed question about the dataset for my capstone project: Is there a relationship between an MS patient's status as a current or former smoker and their likelihood of experiencing the COVID-19 symptom of loss of taste or smell
 
 #### Set up
+
 ```{r}
 #Clear the environment
 rm(list = ls())
@@ -18,7 +19,7 @@ library(ggfortify)
 
 #### Load in the cleaned dataset
 
-Steps 1 and 2 of the course's data analysis workflow (ensuring the data is entered correctly and constructing visualizations of the data, repairing data as needed) were completed prior and saved as the dataset that will be loaded in. 
+Steps 1 and 2 of the course's data analysis workflow (ensuring the data is entered correctly and constructing visualizations of the data, repairing data as needed) were completed prior and saved as the dataset that will be loaded in.
 
 ```{r}
 covid <- read.csv(here("Data","MS_COVID_DATASET_FINAL.csv"))
@@ -68,7 +69,6 @@ names(covid.chi)
 
 Notice, we have enough data points for each category that the chi square goodness of fit test is reliable. However, as previously mentioned, we should remove the unanswered symptom responses to better understand the relationship between experiencing the symptom of loss of taste or smell and an MS patient's status as a current or former smoker. Based on this chi square test, there is no significant difference between an MS patient's current or former smoker status and their likelihood of experiencing the COVID-19 symptom of loss of taste or smell (X-squared = 1.787, df = 2, p-value = 0.4092).
 
-
 #### Construct a clean plot to convey these results
 
 ```{r}
@@ -95,4 +95,5 @@ ggplot(counts_smoker_status, aes(x = current_or_former_smoker, y = count, fill =
     panel.grid.major = element_line(colour = "gray")
     )
 ```
-```
+
+\`\`\`
