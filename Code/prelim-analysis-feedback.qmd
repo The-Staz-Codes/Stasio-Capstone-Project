@@ -1,0 +1,41 @@
+---
+title: "prelim analysis feedback"
+format: html
+editor: visual
+---
+
+## Preliminary analysis feedback
+
+### General
+I like that you have what I think is a "scratch file" (`Workspace.qmd`). You will want to move it into the drafts folder before you submit the final project (instructions to come).
+
+### Question 1 - Is there a relationship b/w MS type and covid diagnosis?
+Be sure to state your null hypothesis and include any biological justificaton for alternative hypothesis in the narrative at the outset of the analysis.
+
+Line 38 - preliminary plot - nice job adding numbers on top of plot!
+
+Line 53 - You are quite right that an acceptable approach is to lump groups (e.g. confirmed+suspected vs. not susptected).  You could also consider lumping progressive ms with "other" ms type to compare to relapsing-remitting. 
+
+The way you would do either is to add a new column to capture the new categories and use our good old friend `which(covid$covid19_diagnosis == ...) and then assign new values in the column based on which rows result from the `which` call.
+
+Line 57 - technically, you are not conducting a goodness of fit test but are conducting a chi-square test of association aka test of independence.
+
+Line 69 - I agree with your assessment of the error warning - I would suggest at least combining progressive w/ other MS and perhaps combine confirmed+suspected vs. not suspected as per what you wrote in your code.
+
+Line 100 - Perhaps a more technically correct to make your statement is to say that a person's covid diagnosis does not depend on the type of ms they have (rather than that ms type is "not a signficant predictor of"...)
+
+Overall good job.
+
+### Question 2
+This is a fun question!
+
+Line 51 - You do know how to do this (we didn't formally discuss it, but you would simply filter the data set to just include folks who answered yes or no for loss of taste or smell and use that subset of the data for your analysis).
+
+Line 55 - I think the answer depends on what you want to get at.  If you turned the question on its head, and asked "does a history of smoking increase the odds of losing sense of taste or smell with covid" then you could run as logistic regression with yes or no to loss of taste/smell as response and smoking history (yes or unanswered) as the predictor. Why don't you try it, just to do a different analysis.
+
+The reason it might not tell you much more than your chi-square is that, because smoking history is not continuous (vs. e.g. "years as a smoker" or "packs smoked a day" or something), then you don't get much more information in terms of odds ratio. But it might be fun for you to try it, just to do a different analysis. Of course, if the test is non-significant, you don't get odds ratios anyhow.
+
+I have a lot of info about logistic regression in the Cap DAP Example github repo.
+
+Good thorough job.
+
