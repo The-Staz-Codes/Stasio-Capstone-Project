@@ -28,6 +28,11 @@ covid <- read.csv(here("Data","MS_COVID_DATASET_FINAL.csv"))
 fix <- which(covid$covid19_diagnosis %in% c("confirmed","suspected"))
 covid$covid19_diagnosis[fix] <- "confirmed_or_suspected"
 
+#Modify Question 1: Instead, let's investigate if a person's COVID-19 diagnosis depends on whether or not they have Relapsing-remitting or a different kind of MS 
+#Combine the Other and Progressive_MS types
+fix2 <- which(covid$ms_type %in% c("progressive_MS", "other"))
+covid$ms_type[fix2] <- "Others"
+
 #Gather counts of confirmed COVID-19 diagnosis (confirmed, suspected, or not suspected) by MS type
 counts_ms_type <- covid |>
   group_by(ms_type, covid19_diagnosis) |>

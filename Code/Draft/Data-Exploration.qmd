@@ -1,10 +1,10 @@
 ---
-title: "Capstone"
+title: "Data-Exploration"
 format: html
 editor: visual
 ---
 
-The purpose of this project is to demonstrate compentency in the scientific, reproducible workflow of data analysis. I will be running several statistical analyses to answer questions I've hypothesized about a dataset on COVID-19 patients with multiple sclerosis (MS).
+The purpose of this project is to demonstrate competency in the scientific, reproducible workflow of data analysis. I will be running several statistical analyses to answer questions I've hypothesized about a dataset on COVID-19 patients with multiple sclerosis (MS).
 
 # Set-up
 
