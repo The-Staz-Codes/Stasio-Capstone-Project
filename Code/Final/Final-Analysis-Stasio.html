@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.54">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Final-Analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="Final-Analysis-Stasio_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Final-Analysis-Stasio_files/libs/quarto-html/quarto.js"></script>
+<script src="Final-Analysis-Stasio_files/libs/quarto-html/popper.min.js"></script>
+<script src="Final-Analysis-Stasio_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Final-Analysis-Stasio_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Final-Analysis-Stasio_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Final-Analysis-Stasio_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Final-Analysis-Stasio_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Final-Analysis-Stasio_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Final-Analysis-Stasio_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+<link rel="stylesheet" href="styles_capstone.css">
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Final-Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction:</h2>
+<p>Since the global pandemic in 2020, COVID-19 has influenced everyday life, from shifting social norms surrounding mask wearing to shutting down well-established businesses. However, the biggest concern surrounding COVID-19 has been public safety, and although the rate of spread has leveled out significantly, it is worth identifying which groups still remain most at risk for catching the disease. This statistical analysis aims to determine susceptibility to COVID-19 among people with different types of multiple sclerosis (MS), and risk of COVID-19 symptoms depending on certain habits.</p>
+<p>The dataset it uses was collected to study the effects of COVID-19 in people with MS due to their heightened susceptibility to infections and concerns about how the disease interacts with their central nervous system. The data was collected via direct entry into am online platform, done by clinicians, the person with MS being studied, or a representative either in a hospital setting or at home. Although not specified, collection presumably began at the pandemic’s start and was terminated on February 3rd, 2022. It contains information about smoking habits, COVID-19 symptoms, diagnosis, treatment, and whether patients recovered from 1141 people with MS.</p>
+<p>The first question we will investigate is if an MS patient’s COVID-19 diagnosis depends on whether they have relapsing-remitting or a different MS type. Importantly, there are three MS types referenced in the dataset: 1) other, 2) progressive, and 3) relapsing-remitting, however, since the majority of entries are from patients with a relapsing-remitting MS type, we will be combining other and progressive into one collective “others” category for sake of comparison. Similarly, since there are three COVID-19 diagnosis categories: 1) confirmed, 2) suspected, and 3) not suspected, and the majority of entries are from patients not_suspected, we will combine confirmed and suspected into a collective “confirmed_or_suspected” category. Since people with the relapsing-remitting MS phenotype typically experience more immunodeficiencies compared to other phenotypes, we expect them to be more susceptible to diseases such as COVID-19 (Segal 2014). Thus, we expect a greater prevalence of confirmed or suspected cases among the relapsing-remitting group compared to the others group.</p>
+<p>The second question we will investigate is does an MS patient’s status as a current or former smoker increase their likelihood of experiencing the COVID-19 symptom of loss of taste or smell. Let us note that smoking damages olfactory tissue, which makes the user less susceptible to smells and puts them at a higher risk of losing their sense of smell (Gurgel, et al.&nbsp;2018). Thus, we should expect the COVID-19 symptom of losing one’s sense of smell (or taste since they’re grouped together) will be more prevalent among current or former smokers. However, among entries, patients either reported their status as a current or former smoker as “yes” or left the question blank (presumably because they either felt embarrassed or did not feel the need to answer the question). Thus, we will be comparing those who reported their status as “yes” to those who left the question unanswered. Also, we will filter the dataset to exclude those who did not answer “yes” or “no” to having experienced the COVID-19 symptom of loss of taste or smell. This will be done since loss of taste or smell is the dependent variable and there is no meaningful information to derive if left unanswered.</p>
+</section>
+<section id="statistical-test-1" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-test-1">Statistical Test 1</h2>
+<p>Null Hypothesis: An MS patient’s COVID-19 diagnosis does not depend on whether they have relapsing-remitting or a different MS type.</p>
+<p>Alternative Hypothesis: Patients with a relapsing-remitting MS type are more likely to contract COVID-19 (have a confirmed or suspected case) than other MS types.</p>
+<section id="set-up" class="level4">
+<h4 class="anchored" data-anchor-id="set-up">Set up</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Clear the environment</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Load in packages</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/ebar/Library/CloudStorage/OneDrive-St.LawrenceUniversity/Classes/Biostats/Biostats F24/Student Work/R Projects/CapDAP/Stasio-Capstone-Project</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfortify)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-in-the-cleaned-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="load-in-the-cleaned-dataset">Load in the cleaned dataset</h4>
+<p>Steps 1 and 2 of the course’s data analysis workflow (ensuring the data is entered correctly, constructing visualizations of the data, and repairing data as needed) were completed prior and saved as the dataset that will be loaded in. Changes to the dataset are documented in the metadata file.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"Data"</span>,<span class="st">"MS_COVID_DATASET_FINAL.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="plot-relationships-and-make-guesses" class="level4">
+<h4 class="anchored" data-anchor-id="plot-relationships-and-make-guesses">Plot relationships and make guesses</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Combine the suspected and confirmed cases</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fix <span class="ot">&lt;-</span> <span class="fu">which</span>(covid<span class="sc">$</span>covid19_diagnosis <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"confirmed"</span>,<span class="st">"suspected"</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>covid<span class="sc">$</span>covid19_diagnosis[fix] <span class="ot">&lt;-</span> <span class="st">"confirmed_or_suspected"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#Combine the Other and Progressive_MS types</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>fix2 <span class="ot">&lt;-</span> <span class="fu">which</span>(covid<span class="sc">$</span>ms_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"progressive_MS"</span>, <span class="st">"other"</span>))</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>covid<span class="sc">$</span>ms_type[fix2] <span class="ot">&lt;-</span> <span class="st">"Others"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#Gather counts of confirmed COVID-19 diagnosis (confirmed, suspected, or not suspected) by MS type</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>counts_ms_type <span class="ot">&lt;-</span> covid <span class="sc">|&gt;</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(ms_type, covid19_diagnosis) <span class="sc">|&gt;</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">count =</span> <span class="fu">length</span>(ms_type)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'ms_type'. You can override using the
+`.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a bar graph to view counts of confirmed COVID-19 diagnoses (confirmed, suspected, or not_suspected) by MS type</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(counts_ms_type, <span class="fu">aes</span>(<span class="at">x =</span> ms_type, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                             <span class="at">y =</span> count, <span class="at">fill =</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                             covid19_diagnosis)) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">position =</span> <span class="st">'dodge'</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"confirmed_or_suspected"</span> <span class="ot">=</span> <span class="st">"lightgreen"</span>, </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"not_suspected"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> count), </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"MS Type"</span>) <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Number of Patients"</span>) <span class="sc">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="st">"Others"</span>, <span class="st">"relapsing_remitting"</span>),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Others"</span>, <span class="st">"Relapsing Remitting"</span>)) <span class="sc">+</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="cn">NA</span>),</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>), </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>), </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">15</span>, <span class="at">vjust =</span> <span class="fl">0.5</span>, <span class="at">colour =</span> <span class="st">"Black"</span>),</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"gray"</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final-Analysis-Stasio_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Based on the plot, the ratio of not_suspected to confirmed_or_suspected cases across the two groups appears very similar (648:175 for relapsing-remitting and 169:46 for others). Thus, we expect the null hypothesis to hold true. This means it is reasonable to assume an MS patient’s COVID-19 diagnosis should not depend on whether they have relapsing-remitting or a different MS type. Since we have a categorical predictor variable and categorical response variable, a chi-square test of association (test of independence) is appropriate.</p>
+</section>
+<section id="conduct-a-chi-square-test-of-association" class="level4">
+<h4 class="anchored" data-anchor-id="conduct-a-chi-square-test-of-association">Conduct a chi-square test of association</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transform the dataframe into a matrix</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>covid.mat <span class="ot">&lt;-</span> <span class="fu">xtabs</span>(count <span class="sc">~</span> ms_type <span class="sc">+</span> covid19_diagnosis, <span class="at">data =</span> counts_ms_type)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the chi-square test</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">chisq.test</span>(covid.mat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  covid.mat
+X-squared = 6.6441e-31, df = 1, p-value = 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Access the specifics of the chi-squared test</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>covid.chi <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(covid.mat)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(covid.chi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "statistic" "parameter" "p.value"   "method"    "data.name" "observed" 
+[7] "expected"  "residuals" "stdres"   </code></pre>
+</div>
+</div>
+<p>The results of this Chi-squared test show an MS patient’s COVID-19 diagnosis does not depend on their MS type, relapsing-remitting or other (X-squared = 6.441e-31, df = 1, p-value = 1). Since we get a p-value of exactly 1, our observed results are, in theory, entirely due to chance. Thus, despite experiencing more immunodeficiencies, people with the relapsing-remitting MS type are no more (or less) susceptible to contracting COVID-19 than other MS types according to these results. The sample size is fairly large, so even if it were increased, we would likely observe the same results. The differences in immune system response in relapsing-remitting versus other MS types is irrelevant when infected with COVID-19, potentially because the disease interacts with the body in ways that render all types equally susceptible. Age is also another consideration with these results. Typically, older populations are at higher risk of contracting COVID-19, and since MS patients have life spans roughly 5-10 years shorter than the general population, it may be that age is the more significant predictor of a confirmed_or_suspected case and differences in susceptibility are masked until a certain age is reached. If this were the case, most patients likely were not past this age as relapsing-remitting and other MS types present themselves around ages 20-40 (Romero-Pinel, et al.&nbsp;2022).</p>
+</section>
+<section id="closing-remarks" class="level4">
+<h4 class="anchored" data-anchor-id="closing-remarks">Closing Remarks</h4>
+<p>At this point in the course’s data analysis workflow, we would construct another plot to more clearly convey our results (e.g.&nbsp;with error bars, etc.) if there was statistically significant information. However, since we determined our results are entirely due to chance, we can skip constructing this plot. Our results support the null hypothesis that an MS patient’s COVID-19 diagnosis does not depend on whether they have relapsing-remitting or a different MS type (X-squared = 6.441e-31, df = 1, p-value = 1).</p>
+</section>
+</section>
+<section id="statistical-test-2" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-test-2">Statistical Test 2</h2>
+<p>Null Hypothesis: There is no relationship between an MS patient’s status as a current or former smoker and their likelihood of experiencing the COVID-19 symptom of loss of taste or smell.</p>
+<p>Alternative Hypothesis: Those who identify as current or former smokers will experience the COVID-19 symptom of loss of taste or smell at a higher rate than those who left the question unanswered.</p>
+<section id="set-up-1" class="level4">
+<h4 class="anchored" data-anchor-id="set-up-1">Set up</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Clear the environment</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Load in packages</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfortify)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(oddsratio) <span class="co">#converts log odds to odds ratios</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="load-in-the-cleaned-dataset-1" class="level4">
+<h4 class="anchored" data-anchor-id="load-in-the-cleaned-dataset-1">Load in the cleaned dataset</h4>
+<p>Steps 1 and 2 of the course’s data analysis workflow (ensuring the data is entered correctly and constructing visualizations of the data, repairing data as needed) were completed prior and saved as the dataset that will be loaded in. Changes to the dataset are documented in the metadata file.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>covid <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">"Data"</span>,<span class="st">"MS_COVID_DATASET_FINAL.csv"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="plot-the-relationships-and-make-guesses" class="level4">
+<h4 class="anchored" data-anchor-id="plot-the-relationships-and-make-guesses">Plot the relationships and make guesses</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Filter the dataset to exclude patients that left the question of experiencing the COVID-19 symptom of loss of taste or smell unanswered </span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>covid_filtered <span class="ot">&lt;-</span> <span class="fu">filter</span>(covid, covid19_sympt_loss_smell_taste <span class="sc">==</span> <span class="fu">c</span>(<span class="st">"yes"</span>, <span class="st">"no"</span>))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Gather counts of confirmed loss of taste or smell symptoms (Yes or No), by current or former smoker status (Unanswered or no)</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>counts_smoker_status <span class="ot">&lt;-</span> covid_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(current_or_former_smoker, covid19_sympt_loss_smell_taste) <span class="sc">|&gt;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarize</span>(</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">count =</span> <span class="fu">length</span>(covid19_sympt_loss_smell_taste)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'current_or_former_smoker'. You can
+override using the `.groups` argument.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Create a bar graph to view counts of confirmed loss of taste or smell symptoms (Yes or No) by current or former smoker status (Yes or Unanswered)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(counts_smoker_status, <span class="fu">aes</span>(<span class="at">x =</span> current_or_former_smoker, <span class="at">y =</span> count, <span class="at">fill =</span> covid19_sympt_loss_smell_taste)) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">position =</span> <span class="st">'dodge'</span>) <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"yes"</span> <span class="ot">=</span> <span class="st">"green"</span>, </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>                               <span class="st">"no"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span> </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> count), </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.9</span>), </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Current or Former Smoker Status"</span>) <span class="sc">+</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Number of Patients"</span>) <span class="sc">+</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="st">"Unanswered"</span>, <span class="st">"yes"</span>),</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No Response"</span>, <span class="st">"Yes"</span>)) <span class="sc">+</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.key =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="cn">NA</span>),</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>), </span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>), </span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="st">"Black"</span>),</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"black"</span>),</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">"gray"</span>)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final-Analysis-Stasio_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Based on the plot, it appears the COVID-19 symptom of loss of taste or smell is experienced at a higher rate by those who left their status as a current or former smoker unanswered compared to those who said yes, which is the opposite of what we anticipated. Thus, we can expect to reject the null hypothesis in favor of an alternative hypothesis that differs from the one proposed: Those who identify as current or former smokers will experience the COVID-19 symptom of loss of taste or smell at a <strong><em>lower</em></strong> rate than those who left the question unanswered. The reasoning behind this is likely that the “Unanswered” group encompasses people who experienced the COVID-19 symptom and were current or former smokers but did not identify themselves as such. This statistical test would be more reliable if patients were required to answer questions rather than having the option to leave them blank as it allows room for ambiguity (it also greatly shrinks the sample size from 1142 to 120). Since our predictor variable, current or former smoker status, is binary and our response variable, experiencing the COVID-19 symptom of loss of taste or smell, is also binary, we will proceed by conducting a logistic regression.</p>
+</section>
+<section id="adjust-and-fit-the-model" class="level4">
+<h4 class="anchored" data-anchor-id="adjust-and-fit-the-model">Adjust and fit the model</h4>
+<p>Set experiencing the COVID-19 symptom of loss of taste or smell = 1 and not experiencing the symptom = 0.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Add new column to the dataset (ltos = loss of taste or smell)</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>covid_filtered<span class="sc">$</span>sympt_ltos_code <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Set yes to correspond to 1 and no to correspond to 2</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">which</span>(covid_filtered<span class="sc">$</span>covid19_sympt_loss_smell_taste <span class="sc">==</span> <span class="st">"yes"</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>covid_filtered<span class="sc">$</span>sympt_ltos_code[yes] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">which</span>(covid_filtered<span class="sc">$</span>covid19_sympt_loss_smell_taste <span class="sc">==</span> <span class="st">"no"</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>covid_filtered<span class="sc">$</span>sympt_ltos_code[no] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Fit a generalized linear model</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>covid.mod <span class="ot">&lt;-</span> <span class="fu">glm</span>(sympt_ltos_code <span class="sc">~</span> current_or_former_smoker, <span class="at">family =</span> <span class="st">"binomial"</span>, <span class="at">data =</span> covid_filtered)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(covid.mod)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = sympt_ltos_code ~ current_or_former_smoker, family = "binomial", 
+    data = covid_filtered)
+
+Coefficients:
+                            Estimate Std. Error z value Pr(&gt;|z|)  
+(Intercept)                  -0.6286     0.2528  -2.487   0.0129 *
+current_or_former_smokeryes  -0.1542     0.3936  -0.392   0.6954  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 152.76  on 119  degrees of freedom
+Residual deviance: 152.61  on 118  degrees of freedom
+AIC: 156.61
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+<p>For this output, the coefficients indicate the average change in log odds of an MS patient experiencing the COVID-19 symptom of loss of taste or smell (yes = 1) with each increase in the number of patients with histories as current or former smokers. A 1 unit increase in the number of current or former smokers decreases the log odds of a MS patient experiencing the COVID-19 symptom of loss of taste or smell by 0.1542.</p>
+<p>To further analyze this information, let’s calculate an odds ratio</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">or_glm</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> covid_filtered,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> covid.mod,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">incr =</span> <span class="fu">list</span>(<span class="at">current_or_former_smoker =</span> <span class="dv">1</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                    predictor oddsratio ci_low (2.5) ci_high (97.5)
+1 current_or_former_smokeryes     0.857        0.392          1.846
+           increment
+1 Indicator variable</code></pre>
+</div>
+</div>
+<p>The odds ratio for current_or_former_smoker (when indicated as yes) = 0.857, which means that, for every 1 unit increase in the number of people with histories as current or former smokers, the odds that they will experience the COVID-19 symptom of loss of taste or smell is 0.857. This number is fairly close to 1, meaning it is not any more likely or unlikely that a person will experience the COVID-19 symptom of loss of taste or smell, perhaps slightly less likely. Despite our initial guess, we cannot conclude statistical significance (oddsratio = 0.857). As mentioned, this is likely due to discrepancies in the data (patients leaving their status as a current or former smoker unanswered could mean either yes or no and thus we cannot be confident our assessment is completely accurate).</p>
+</section>
+<section id="closing-remarks-1" class="level4">
+<h4 class="anchored" data-anchor-id="closing-remarks-1">Closing Remarks</h4>
+<p>At this point in the course’s data analysis workflow, we would construct another plot to more clearly convey our results (e.g.&nbsp;with error bars, etc.) if there was statistically significant information. However, since we determined our results are not statistically significant, we can skip constructing this plot. Our results support the null hypothesis that there is no relationship between an MS patient’s status as a current or former smoker and their likelihood of experiencing the COVID-19 symptom of loss of taste or smell (oddsratio = 0.857).</p>
+</section>
+</section>
+<section id="challenges" class="level2">
+<h2 class="anchored" data-anchor-id="challenges">Challenges</h2>
+<p>This project, by nature of being based around a real, inherently imperfect dataset, posed many challenges that required innovative thinking and logical solution construction. For example, in the data exploration step, I discovered the majority of patients had an MS type of relapsing-remitting, and the majority of COVID-19 diagnosis were labeled “not suspected.” This caused the Chi-square test aiming to answer the first question to be unreliable due to comparing too few data points, so I made the decision to combine confirmed and suspected cases as well as combine MS types other than relapsing-remitting into one category. This allowed for proper comparison and a Chi-squared test with enough data points among compared categories to be reliable.</p>
+<p>Furthermore, I came to a similar revelation that I needed to alter the dataset when investigating the second question. I needed to filter based on the response variable (experiencing the COVID-19 symptom of loss of taste or smell) since the absence of data for it was of no use to the analysis. I made the decision to remove all data where that field was left empty. I also had to acknowledged that the analysis could not be as conclusive as I would hope since patients either claimed their status as a current or former smoker to be yes or left the question unanswered (which could be yes or no).</p>
+<p>Analysis of the second question also involved me learning about a topic we did not cover in the core curriculum, logistic regression. However, given the statistical foundation we have been building in this course, I was able to conduct the test smoothly. Additionally, I learned a new markdown feature to make the word “<strong><em>lower</em></strong>” appear bold and italicized, emphasizing its importance. For readability, I also used online resources to teach myself how to make the subheadings (the ones using 4 hashtags) green when the file is rendered as an html by utilizing a css file.</p>
+<p>The only challenge I faced during this project that I could not solve is finding a 3rd statistical analysis to run that made sense in context of my investigation. I spent time searching for another related dataset, one containing continuous data I could analyze because none of the data in the chosen dataset was continuous, but given this topic is niche, I could not find it. However, since I was able to successfully run a logistic regression and implement new features we did not cover in the course, I’m confident I could analyze continuous data in new ways when faced with datasets requiring it in the future.</p>
+<section id="sources" class="level4">
+<h4 class="anchored" data-anchor-id="sources">Sources:</h4>
+<ol type="1">
+<li><p>Da Ré AF, Gurgel LG, Buffon G, Moura WER, Marques Vidor DCG, Maahs MAP. Tobacco Influence on Taste and Smell: Systematic Review of the Literature. Int Arch Otorhinolaryngol. 2018 Jan;22(1):81-87.</p></li>
+<li><p>Romero-Pinel, Lucía, et al.&nbsp;“The Age at Onset of Relapsing-Remitting Multiple Sclerosis Has Increased over the Last Five Decades.” Multiple Sclerosis and Related Disorders, vol.&nbsp;68, Dec.&nbsp;2022, p.&nbsp;104103. PubMed, <a href="https://doi.org/10.1016/j.msard.2022.104103" class="uri">https://doi.org/10.1016/j.msard.2022.104103</a></p></li>
+<li><p>Segal, B. M. (2014). Stage-specific immune dysregulation in multiple sclerosis. Journal of Interferon &amp; Cytokine Research: The Official Journal of the International Society for Interferon and Cytokine Research, 34(8), 633–640. <a href="https://doi.org/10.1089/jir.2014.0025" class="uri">https://doi.org/10.1089/jir.2014.0025</a></p></li>
+</ol>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
